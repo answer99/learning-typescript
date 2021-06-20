@@ -8,15 +8,19 @@ class Sorter {
       for(let j = 0; j < length-i-1; j++){
 
         // if collection is an array of numbers
-        if(this.collection[j] > this.collection[j+1]) {
-          const leftHand = this.collection[j];
-          this.collection[j] = this.collection[j+1];
-          this.collection[j+1] = leftHand;
+        if(this.collection instanceof Array) {
+          if(this.collection[j] > this.collection[j+1]) {
+            const leftHand = this.collection[j];
+            this.collection[j] = this.collection[j+1];
+            this.collection[j+1] = leftHand;
+          }
         }
-
 
         // If collection is a string, do this logic instead
         // ~~ login to compare ans swap characters in a string
+        if(typeof this.collection === 'string'){
+
+        }
       }
     }
   }
