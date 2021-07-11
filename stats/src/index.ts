@@ -1,12 +1,14 @@
 import { MatchReader  } from "./MatchReader";
 import { MatchResult } from "./MatchResult";
+import { CsvFileReader } from "./CsvFileReader";
 
-const reader = new MatchReader('football.csv');
-reader.read();
+const dataReader = new CsvFileReader('football.csv')
+const reader = new MatchReader(dataReader);
+reader.load();
 
 let manUnitedWins = 0;
 
-for(let match of reader.data) {
+for(let match of reader.matches) {
   if(match[1] === 'Man United' && match[5] === MatchResult.HomeWin) {
     manUnitedWins++;
   }
