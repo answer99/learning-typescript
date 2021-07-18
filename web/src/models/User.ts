@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
 
 interface UserProps {
   id?: number;
@@ -6,10 +7,13 @@ interface UserProps {
   age?: number;
 }
 
-type Callback = () => void;
-
 export class User {
-  private events: { [key: string]: Callback[] } = {};
+  // Hard code dependencies
+  // (-) every time we create a user, we are going tot have the same
+  //     eventing class
+  // But now dont see any chance to repleace/change the eventing class
+  //
+  public events: Eventing = new Eventing();
 
   constructor(private data: UserProps) { }
 
@@ -19,23 +23,6 @@ export class User {
 
   set(update: UserProps): void {
     Object.assign(this.data, update);
-  }
-
-  on(eventName: string, callback: Callback): void {
-    const handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers;
-  }
-
-  trigger(eventName: string): void {
-    const handlers = this.events[eventName];
-
-    if (!handlers || handlers.length === 0) {
-      return;
-    }
-    handlers.forEach(callback => {
-      callback();
-    });
   }
 
   fetch(): void {
