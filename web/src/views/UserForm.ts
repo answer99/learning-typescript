@@ -1,28 +1,32 @@
+import { User } from '../models/User';
+
 export class UserForm {
-  constructor(public parent: Element) {}
+  constructor(public parent: Element, public model: User) {}
 
   // basically used to do it back in the day
   eventMap(): { [key: string]: () => void } {
     return {
-      'click:button': this.onButtonClick,
-      'mouseenter:h1': this.onHeaderHover,
+      'click:.set-age': this.onSetAgeClick,
     }
   }
-  onHeaderHover(): void {
-    console.log('mouseenter h1')
-  }
 
-
-  onButtonClick(): void {
-    console.log('Hi there');
+  // arrow function for binding the value of "this" inside of the function
+  // * every time that we define an event handler, we have to use an arrow function to avoid
+  //   the error
+  onSetAgeClick = (): void => {
+    console.log(this.model.get('age'))
+    this.model.setRandomAge();
   }
 
   template(): string {
     return `
       <div>
         <h1>User From</h1>
+        <div>User name: ${this.model.get('name')}</div>
+        <div>User age: ${this.model.get('age')}</div>
         <input />
         <button>Click Me</button>
+        <button class="set-age">Set Random Age</button>
       </div>
     `;
   }
