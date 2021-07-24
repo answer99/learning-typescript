@@ -1,15 +1,7 @@
-import { User } from '../models/User';
+import { User, UserProps } from '../models/User';
+import { View } from './View';
 
-export class UserForm {
-  constructor(public parent: Element, public model: User) {
-    this.bindModel();
-  }
-
-  bindModel(): void {
-    this.model.on('change', () => {
-      this.render();
-    })
-  }
+export class UserForm extends View<User, UserProps> {
 
   // basically used to do it back in the day
   eventMap(): { [key: string]: () => void } {
@@ -45,26 +37,5 @@ export class UserForm {
         <button class="set-age">Set Random Age</button>
       </div>
     `;
-  }
-
-  bindEvents(fragment: DocumentFragment): void {
-    const eventMap = this.eventMap();
-
-    for(let eventKey in eventMap) {
-      const [eventName, selector] = eventKey.split(':');
-
-      fragment.querySelectorAll(selector).forEach(element => {
-        element.addEventListener(eventName, eventMap[eventKey]);
-      })
-    }
-  }
-
-  render(): void {
-    this.parent.innerHTML = '';
-
-    const templateElement = document.createElement('template');
-    templateElement.innerHTML = this.template();
-    this.bindEvents(templateElement.content);
-    this.parent.append(templateElement.content);
   }
 }
