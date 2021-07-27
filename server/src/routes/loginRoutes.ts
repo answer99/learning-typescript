@@ -1,5 +1,10 @@
 import { Router, Request, Response } from "express";
 
+interface ReqBody {
+  email: string;
+  password: string;
+}
+
 const router = Router();
 
 router.get('/login', (req: Request, res: Response) => {
@@ -18,9 +23,10 @@ router.get('/login', (req: Request, res: Response) => {
   `);
 });
 
-router.post('/login', (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  res.send(email + password);
+// From @types/express@4.17.2, the Request type uses generics.
+router.post('/login', (req: Request<{}, {}, ReqBody>, res: Response) => {
+  const { email } = req.body;
+  res.send(email.toUpperCase());
 })
 
 export { router };
