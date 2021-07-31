@@ -1,3 +1,4 @@
+@classDecorator
 class Boat {
   color: string = 'red';
 
@@ -6,10 +7,24 @@ class Boat {
   }
 
   @logError('Oops, boat was sunk..')
-  pilot(): void {
-    throw new Error();
-    console.log('swish');
+  pilot(
+    @parameterDecorator speed: string,
+    @parameterDecorator generateWake: boolean
+  ): void {
+    if(speed ==='fase'){
+      console.log('swish');
+    } else {
+      console.log('nothing');
+    }
   }
+}
+
+function classDecorator(constructor: typeof Boat) {
+  console.log(constructor);
+}
+
+function parameterDecorator(target: any, key: string, index: number) {
+  console.log(key, index);
 }
 
 function logError(errorMessage: string) {
@@ -24,5 +39,3 @@ function logError(errorMessage: string) {
     }
   };
 }
-
-new Boat().pilot();
