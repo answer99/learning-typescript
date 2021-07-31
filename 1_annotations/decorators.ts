@@ -1,21 +1,26 @@
 class Boat {
   color: string = 'red';
 
-  @testDecorator
   get formattedColor(): string {
     return `This boats color is ${this.color}`;
   }
 
-  @testDecorator
+  @logError
   pilot(): void {
+    throw new Error();
     console.log('swish');
   }
 }
 
-function testDecorator(target: any, key: string, desc: PropertyDescriptor): void {
-  console.log('Target:', target);
-  console.log('Key', key);
-  console.log('desc', desc)
+function logError(target: any, key: string, desc: PropertyDescriptor): void {
+  const method = desc.value;
+  desc.value = function() {
+    try {
+      method();
+    } catch(e){
+      console.log('Oops, boat was sunk');
+    }
+  }
 }
 
-// @testDecorator equals callning testDecorator(Boat.prototype, 'pol')
+new Boat().pilot();
