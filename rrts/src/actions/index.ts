@@ -15,6 +15,7 @@ export interface FetchTodosAction {
 
 const url = 'https://jsonplaceholder.typicode.com/todos';
 
+// action creator
 export const fetchTodos = () => {
   return async (dispatch: Dispatch) => {
     const response = await axios.get<Todo[]>(url);
